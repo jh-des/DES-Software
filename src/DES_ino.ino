@@ -21,7 +21,7 @@
 #define PIN9_PWM_FREQUENCY 500
 #define UPPER_POOL_VOLUME
 #define FLOW_RATE_PER_10_PERCENT_DUTY 14
-f
+
 // resistance in Ohm
 #define MAX_CURRENT_RESISTOR 10
 #define MAX_VOLT_DIVIDER_RATIO 2
@@ -32,7 +32,7 @@ int Upper_pool_fill_level = 0; //percentual
 
 /// PERIPHERALS
 rgb_lcd lcd;
-------
+// ------
 void sensorSetup() {
   pinMode(MAX_CURRENT_RELAY, OUTPUT);
   pinMode(MAX_CURRENT_SENSOR, INPUT);
@@ -52,9 +52,9 @@ void pumped_storage_init()
   digitalWrite(MOTOR_DRIVER_START_RELAY, HIGH);
   Servo valve;
   valve.attach(9);
-  valve.write(VAVLE_SERVO_CLOSED);
+  valve.write(VALVE_SERVO_CLOSED);
   Motor.begin();
-  MOtor.speed(MOTOR1, 0);
+  Motor.speed(MOTOR1, 0);
 }
 
   void PS_pump(int pump_input_power_mW) //power in mW
@@ -76,6 +76,7 @@ void pumped_storage_init()
   
   
   
+
 
 // in mA
 unsigned long measureLoadCurrent() {
@@ -133,17 +134,17 @@ void setup() {
 
 void loadprediction(int t)
 {
-    pow(((t % 24)-12)/2.5,2);
+    pow(((t % 24)-12)/2.5,2); // TODO what does this do
 }
 
 int generationprediction(int t)
 {
-  return 9 * exp( -1 *(pow((((t % 24)-12)/2.5),2)));
+  return 9 * exp( -(pow((((t % 24)-12)/2.5),2)));
 }
 
 int predicted_PS_demand(int t)
 {
-  return 2 - (9 * exp( -1 *(pow((((t % 24)-12)/2.5),2))));
+  return 2 - (9 * exp( -(pow((((t % 24)-12)/2.5),2))));
 }
 
 int max_permissible_power_draw_t(int t)
